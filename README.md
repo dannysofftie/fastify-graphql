@@ -1,2 +1,2 @@
 # Fastify GraphQL
-Getting started in GraphQL with Fastify - The Highly performant, Extendible Node.js web framework
+Getting started with GraphQL (Fastify - The Highly performant, Extendible Node.js web framework)
