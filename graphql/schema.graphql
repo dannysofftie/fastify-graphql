@@ -1,0 +1,38 @@
+scalar JSON
+scalar Date
+
+type Account {
+    id: String
+    name: String
+    phone: String
+    email: String
+    address: String
+    idNumber: String
+    createdAt: Date
+    updatedAt: Date
+}
+input SignUpInput {
+    name: String!
+    phone: String!
+    email: String
+    password: String!
+    address: String
+    idNumber: String
+}
+input SignInInput {
+    phone: String
+    password: String
+}
+type TokenPayload {
+    token: String
+}
+type SignInResponse {
+    message: String
+    user: Account
+    payload: TokenPayload
+}
+
+enum Role {
+    ADMIN
+    USER
+}
