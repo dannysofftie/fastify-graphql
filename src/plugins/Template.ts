@@ -4,7 +4,7 @@ import { minify } from 'html-minifier';
 import { join } from 'path';
 
 interface ITemplatePaths {
-    template: 'create-account' | 'reset-password';
+    template: 'create-account' | 'reset-password' | '404-page';
 }
 
 const rootPath = join(__dirname, '..', '..', 'templates/');
@@ -12,6 +12,7 @@ const rootPath = join(__dirname, '..', '..', 'templates/');
 const templates = {
     'create-account': 'emails/accounts/new-account.ejs',
     'reset-password': 'emails/accounts/password-reset.ejs',
+    '404-page': '404.ejs',
 };
 
 export interface ICompileTemplate {

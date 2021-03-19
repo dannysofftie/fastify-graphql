@@ -1,6 +1,7 @@
 import { configs } from '@configs';
 import prisma from '@libs/Prisma';
 import plugins from '@plugins/index';
+import { compileEjs } from '@plugins/Template';
 import { schema } from '@schema/index';
 import altairPlugin from 'altair-fastify-plugin';
 import fastify, { FastifyInstance } from 'fastify';
@@ -78,6 +79,12 @@ export default class App {
 
         // generate schema in development to improve tooling
         process.env.NODE_ENV !== 'production' && mercuriusCodegen(this.app, { targetPath: join(process.cwd(), 'graphql', 'index.d.ts'), codegenConfig: { useIndexSignature: true } });
+
+        // respond with 404 for unhandled paths
+        this.app.get('*', { preHandler: [] }, (req, res) => {
+            const html = compileEjs({ template: '404-page' })(null);
+            res.type('text/html').send(html);
+        });
     }
 
     async start(): Promise<void> {
