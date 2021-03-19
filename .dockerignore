@@ -1,0 +1,9 @@
+reports
+uploads
+Dockerfile
+.dockerignore
+.git
+node_modules
+dist
+graphql/index.d.ts
+deploy*
