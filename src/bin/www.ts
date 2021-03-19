@@ -76,8 +76,8 @@ export default class App {
         // register prisma
         await this.app.register(prisma);
 
-        // generate schema to improve tooling
-        mercuriusCodegen(this.app, { targetPath: join(process.cwd(), 'graphql', 'index.d.ts') });
+        // generate schema in development to improve tooling
+        process.env.NODE_ENV !== 'production' && mercuriusCodegen(this.app, { targetPath: join(process.cwd(), 'graphql', 'index.d.ts'), codegenConfig: { useIndexSignature: true } });
     }
 
     async start(): Promise<void> {
