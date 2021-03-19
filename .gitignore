@@ -4,6 +4,13 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+<<<<<<< HEAD
+=======
+lerna-debug.log*
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+>>>>>>> 30eba073a7cb901a806d296010dcb8386c0ea40e
 
 # Runtime data
 pids
@@ -55,7 +62,6 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-
 .env.test
 
 # parcel-bundler cache (https://parceljs.org/)
