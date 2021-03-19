@@ -7,7 +7,7 @@
         "dev": "NODE_ENV=staging ts-node-dev --trace-warnings --respawn --no-notify --files --watch graphql --ignore-watch node_modules src/index.ts",
         "dev:prod": "ts-node-dev --trace-warnings --respawn --no-notify --files --watch graphql --ignore-watch node_modules src/index.ts",
         "start": "node dist/index.js",
-        "build": "rm -rf dist && tsc -b",
+        "build": "rm -rf dist && tsc -b --pretty --listEmittedFiles",
         "debug": "node --inspect -r ts-node/register src/index.ts",
         "lint": "eslint . --ext .ts",
         "lint:fix": "yarn lint -- --fix",
