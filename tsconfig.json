@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+        "target": "ES2018",
+        "lib": ["ESNext"],
+        "module": "commonjs",
+        "outDir": "dist",
+        "rootDir": "src",
+        "removeComments": false,
+        "downlevelIteration": true,
+        "strict": true,
+        "noImplicitAny": false,
+        "strictNullChecks": false,
+        "noImplicitThis": false,
+        "alwaysStrict": true,
+        "noUnusedParameters": false,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "moduleResolution": "node",
+        "experimentalDecorators": true,
+        "sourceMap": true,
+        "baseUrl": "src",
+        "paths": {
+            "@configs": ["configs"],
+            "@docs": ["docs"],
+            "@libs/*": ["libs/*"],
+            "@hooks/*": ["hooks/*"],
+            "@plugins/*": ["plugins/*"],
+            "@schema/*": ["schema/*"],
+            "@queries/*": ["queries/*"],
+            "@mutations/*": ["mutations/*"],
+            "@rules/*": ["rules/*"]
+        }
+    },
+    "exclude": ["node_modules"]
+}
