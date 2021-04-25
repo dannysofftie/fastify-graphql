@@ -6,7 +6,7 @@ Written with [fastify](https://fastify.io) and [typescript](https://www.typescri
 
 1. Clone repo
     ```bash
-    git clone git@github.com:dannysofftie/nobleprimewriters.git
+    git clone git@github.com:dannysofftie/fastify-graphql.git
     ```
 2. Install dependencies
     ```bash
