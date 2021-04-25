@@ -6,7 +6,7 @@ Written with [fastify](https://fastify.io) and [typescript](https://www.typescri
 
 1. Clone repo
     ```bash
-    git clone git@github.com:dannysofftie/fastify-graphql.git
+    git clone git@github.com:dannysofftie/fastify-graphl.git
     ```
 2. Install dependencies
     ```bash
@@ -27,7 +27,7 @@ Written with [fastify](https://fastify.io) and [typescript](https://www.typescri
 
 ### Build for production
 
-Onesha API is built to run on Docker. To deploy, run the deployment script
+API is built to run on Docker. To deploy, run the deployment script
 
 ```bash
 chmod +x deploy.sh && ./deploy.sh
