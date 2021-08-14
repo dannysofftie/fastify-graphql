@@ -1,17 +1,17 @@
 version: '3'
 
 services:
-    fastify_graphql:
-        image: dannysofftie/fastify_graphql
-        container_name: fastify_graphql
-        restart: unless-stopped
-        networks:
-            - fastify_graphql_network
-        volumes:
-            - ./uploads:/app/uploads
-            - ./reports:/app/reports
-        ports:
-            - '4000:4000'
+  fastify_graphql:
+    image: dannysofftie/fastify_graphql
+    container_name: fastify_graphql
+    restart: unless-stopped
+    networks:
+      - fastify_graphql_network
+    volumes:
+      - ./uploads:/app/uploads
+      - ./reports:/app/reports
+    ports:
+      - '4000:4000'
 
 networks:
-    fastify_graphql_network:
+  fastify_graphql_network:

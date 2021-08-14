@@ -17,7 +17,7 @@ if ! command -v docker &>/dev/null; then
     sudo apt update && sudo apt install docker-ce containerd.io -y
 
     # add current user to docker group and refresh current shell
-    sudo usermod –aG docker $USER
+    sudo usermod -aG docker $USER
 
     # notify user to rerun script again
     echo -e "\n\e[0;32mAfter entering your password, rerun ./deploy.sh again to proceed\e[0;39m\n"
@@ -29,7 +29,7 @@ fi
 # install docker-compose if not installed
 if ! command -v docker-compose &>/dev/null; then
     # download docker compose
-    sudo curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
     # make binary executable
     sudo chmod +x /usr/local/bin/docker-compose
@@ -38,7 +38,7 @@ fi
 # temp variable to hold existing .env file
 EXISTING_ENV_FILE=.env.existing.file
 # pass .env.${environment}
-PRODUCTION_ENV_FILE=.env.${1}
+PRODUCTION_ENV_FILE=.${1}.env
 
 # ensure .env.production file exists
 [ ! -f $PRODUCTION_ENV_FILE ] && echo -e "\e[0;33m$PRODUCTION_ENV_FILE file not found \n\e[0;32mCreate $PRODUCTION_ENV_FILE file and update all environment variables. Refer .env.sample file\n" && exit
@@ -50,17 +50,11 @@ cp $PRODUCTION_ENV_FILE .env
 
 # check if there's existing docker-compose.yml
 EXISTING_DOCKER_COMPOSE_FILE=docker-compose.yml
-TEMP_DOCKER_COMPOSE_FILE=docker-compose.tmp.yml
-
-# we're copying existing docker-compose.yml to a temporary file
-[ -f $EXISTING_DOCKER_COMPOSE_FILE ] && mv $EXISTING_DOCKER_COMPOSE_FILE $TEMP_DOCKER_COMPOSE_FILE
-
 # export the vars in .env into shell
 export $(egrep -v '^#' .env | xargs)
 
 # create docker-compose deployment file
 echo -e "version: '3'
-
 services:
     ${DOCKER_IMAGE_NAME}:
         build:
@@ -76,7 +70,6 @@ services:
             - ./reports:/app/reports
         ports:
             - '4000:4000'
-
 networks:
     ${DOCKER_IMAGE_NAME}_network:" | tee $EXISTING_DOCKER_COMPOSE_FILE >/dev/null 2>&1
 
@@ -92,7 +85,6 @@ docker push $DOCKER_HOST_USERNAME/$DOCKER_IMAGE_NAME
 mkdir -p deploy
 
 echo -e "version: '3'
-
 services:
     ${DOCKER_IMAGE_NAME}:
         image: $DOCKER_HOST_USERNAME/$DOCKER_IMAGE_NAME
@@ -105,7 +97,6 @@ services:
             - ./reports:/app/reports
         ports:
             - '4000:4000'
-
 networks:
     ${DOCKER_IMAGE_NAME}_network:" | tee 'deploy/docker-compose.yml' >/dev/null 2>&1
 
@@ -115,10 +106,8 @@ docker rmi -f $(docker images -f 'dangling=true' -q) || docker container prune -
 # move back .env.existing file to .env
 mv -f $EXISTING_ENV_FILE .env
 
-# move back $TEMP_DOCKER_COMPOSE_FILE to $EXISTING_DOCKER_COMPOSE_FILE
-mv -f $TEMP_DOCKER_COMPOSE_FILE $EXISTING_DOCKER_COMPOSE_FILE
+# delete as we no longer need it
 rm $EXISTING_DOCKER_COMPOSE_FILE
-
 echo -e "\n\e[0;39mCreated image successfully."
 
 echo -e "\n
