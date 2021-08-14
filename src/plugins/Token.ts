@@ -9,21 +9,21 @@ import { configs } from '../configs';
  * @interface IJWTPayload
  */
 export interface IJWTPayload {
-    email: string;
-    id: string;
-    role: Role;
-    phone?: string;
+  email: string;
+  id: string;
+  role: Role;
+  phone?: string;
 }
 
 export interface IJWTToken {
-    /**
-     * Use JWT to sign a token
-     */
-    sign: (options: IJWTPayload) => string;
-    /**
-     * Verify token, and get passed in variables
-     */
-    verify: (token: string) => IJWTPayload;
+  /**
+   * Use JWT to sign a token
+   */
+  sign: (options: IJWTPayload) => string;
+  /**
+   * Verify token, and get passed in variables
+   */
+  verify: (token: string) => IJWTPayload | string;
 }
 
 /**
@@ -33,28 +33,27 @@ export interface IJWTToken {
  * @class Token
  */
 export const token = {
-    /**
-     * Use JWT to sign a token
-     */
-    sign: (options: IJWTPayload): string => {
-        const { email, id, role, phone }: IJWTPayload = options;
+  /**
+   * Use JWT to sign a token
+   */
+  sign: (options: IJWTPayload | string): string => {
+    if (!options) {
+      throw new Error('Expects email, account type and id in payload.');
+    }
 
-        if (!id || !role) {
-            throw new Error('Expects email, account type and id in payload.');
-        }
-
-        return jwt.sign({ email, id, role, phone }, configs.jwtsecret);
-    },
-    /**
-     * Verify token, and get passed in variables
-     */
-    verify: (tokn: string): IJWTPayload => {
-        try {
-            return jwt.verify(tokn, configs.jwtsecret) as IJWTPayload;
-        } catch (error) {
-            return { email: null, role: null, id: null };
-        }
-    },
+    return jwt.sign(options, { key: configs.jwt.private, passphrase: configs.jwt.passphrase }, { algorithm: 'RS256' });
+  },
+  /**
+   * Verify token, and get passed in variables
+   */
+  verify: (tokn: string): IJWTPayload => {
+    if (!tokn) return null;
+    try {
+      return jwt.verify(tokn, configs.jwt.public, { algorithms: ['RS256'] }) as IJWTPayload;
+    } catch (error) {
+      return null;
+    }
+  },
 };
 
 /**
@@ -62,13 +61,10 @@ export const token = {
  *
  * @export
  */
-export function decodeJwtToken(app: FastifyInstance, req: FastifyRequest): IJWTPayload {
-    const auth = req.headers['authorization'];
-
-    try {
-        const token = auth.split(' ')[0] === 'Bearer' ? auth.split(' ')[1] : auth;
-        return app.plugins.verify(token);
-    } catch {
-        return { id: null, role: null, email: null, phone: null };
-    }
+export function decodeJwtToken(app: FastifyInstance, req: FastifyRequest) {
+  const auth = req.headers?.['authorization'];
+  const token = auth?.split(' ')?.[0] === 'Bearer' ? auth?.split(' ')?.[1] : auth;
+  return app.plugins.jwt.verify(token);
 }
+
+// console.log(token.sign(configs.appdomainAdminAuthKey));
