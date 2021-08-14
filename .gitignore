@@ -103,3 +103,4 @@ prisma/docs
 certs
 postgres/{data,pgadmin}
 .chrome
+*/**/data

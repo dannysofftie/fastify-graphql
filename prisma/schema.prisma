@@ -1,47 +1,43 @@
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 generator client {
-  provider = "prisma-client-js"
-}
-
-generator dbml {
-  provider = "prisma-dbml-generator"
-}
-
-generator docs {
-  provider = "node node_modules/prisma-docs-generator"
-  output   = "./docs"
+  provider        = "prisma-client-js"
+  previewFeatures = ["mongoDb", "referentialActions", "orderByAggregateGroup", "selectRelationCount", "orderByRelation"]
 }
 
 model User {
-  id        String            @id @default(uuid())
+  id        String            @id @default(uuid()) @map("_id")
   name      String
-  email     String?           @unique @db.VarChar(255)
-  phone     String            @unique @db.VarChar(255)
+  email     String?           @unique
+  phone     String            @unique
   idNumber  String?
-  password  String            @db.VarChar(255)
+  password  String
   role      Role              @default(USER)
   status    UserAccountStatus @default(ENABLED)
-  createdAt DateTime          @default(now()) @db.Timestamp(6)
+  createdAt DateTime          @default(now())
   updatedAt DateTime          @updatedAt
-  profile   Profile?
+  avatar    Attachment?
 
   // map to table accounts
   @@map("users")
 }
 
-model Profile {
-  id        String  @id @default(uuid())
-  bio       String?
-  avatar    String?
-  accountId String  @unique
-  account   User    @relation(fields: accountId, references: id)
+model Attachment {
+  id       String @id @default(uuid()) @map("_id")
+  file     String
+  filename String
+  mime     String
+  encoding String
 
-  // map to table profiles
-  @@map("profiles")
+  user   User?   @relation(fields: userId, references: id, onDelete: Cascade)
+  userId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("attachments")
 }
 
 enum Role {
