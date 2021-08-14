@@ -23,7 +23,7 @@ const userAccountMutations: IResolvers['Mutation'] = {
       ...(args.input.phone && { phone: context.app.plugins.formatPhoneNumber(args.input.phone) }),
     };
 
-    const user = await context.app.libs.prisma.user.create({ data, include: { profile: true } }).catch(err => {
+    const user = await context.app.libs.prisma.user.create({ data, include: { avatar: true } }).catch(err => {
       return {
         error: {
           field: 'email',
