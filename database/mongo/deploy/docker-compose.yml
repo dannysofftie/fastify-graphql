@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+    mongodb:
+        image: dannysofftie/mongodb
+        container_name: mongodb
+        restart: unless-stopped
+        volumes:
+            - ./data:/data/db
+        networks:
+            - mongodb_network
+        ports:
+            - '11998:27017'
+networks:
+    mongodb_network:
