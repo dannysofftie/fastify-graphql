@@ -1,0 +1,53 @@
+scalar JSON
+scalar Date
+scalar Number
+scalar Upload
+
+type Error {
+  field: String!
+  message: String!
+}
+type ApiResponse {
+  message: String
+  error: Error
+}
+type Account {
+  id: String
+  name: String
+  phone: String
+  email: String
+  address: String
+  idNumber: String
+  createdAt: Date
+  updatedAt: Date
+}
+type TokenPayload {
+  token: String
+}
+type SignInResponse {
+  message: String
+  user: Account
+  payload: TokenPayload
+}
+
+# end of type definitions
+# beginning of input type definitions
+input SignUpInput {
+  name: String!
+  phone: String!
+  email: String
+  password: String!
+  address: String
+  idNumber: String
+}
+input SignInInput {
+  phone: String
+  password: String
+}
+
+# end of input type definitions
+# beginning of enum definitions
+enum Role {
+  SUPER_ADMIN
+  CLIENT
+}

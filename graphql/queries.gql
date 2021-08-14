@@ -1,0 +1,11 @@
+type Query {
+  """
+  Get registred users
+  """
+  getUsers: [Account]
+
+  """
+  Get created and generated posts
+  """
+  getPosts: [Account]
+}
