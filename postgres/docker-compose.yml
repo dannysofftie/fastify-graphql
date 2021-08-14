@@ -1,0 +1,29 @@
+version: '3.1'
+services:
+  postgres:
+    image: postgres
+    container_name: postgress_db
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    volumes:
+      - ./data:/var/lib/postgresql/data/pgdata
+    ports:
+      - 6758:5432
+    networks:
+      - postgres_network
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    env_file:
+      - ./.env
+    volumes:
+      - ./pgadmin:/root/.pgadmin
+    ports:
+      - 5050:80
+    restart: unless-stopped
+    networks:
+      - postgres_network
+
+networks:
+  postgres_network:
