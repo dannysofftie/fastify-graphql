@@ -20,6 +20,7 @@
     "sourceMap": true,
     "esModuleInterop": true,
     "baseUrl": "src",
+    "skipLibCheck": true,
     "paths": {
       "@configs": ["configs"],
       "@docs": ["docs"],
