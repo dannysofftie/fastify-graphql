@@ -7,20 +7,21 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Account {
-  id        String   @id @default(uuid())
+model User {
+  id        String            @id @default(uuid())
   name      String
-  email     String?  @unique @db.VarChar(255)
-  phone     String   @unique @db.VarChar(255)
+  email     String?           @unique @db.VarChar(255)
+  phone     String            @unique @db.VarChar(255)
   idNumber  String?
-  password  String   @db.VarChar(255)
-  role      Role     @default(USER)
-  createdAt DateTime @default(now()) @db.Timestamp(6)
-  updatedAt DateTime @updatedAt
+  password  String            @db.VarChar(255)
+  role      Role              @default(USER)
+  status    UserAccountStatus @default(ENABLED)
+  createdAt DateTime          @default(now()) @db.Timestamp(6)
+  updatedAt DateTime          @updatedAt
   profile   Profile?
 
   // map to table accounts
-  @@map("accounts")
+  @@map("users")
 }
 
 model Profile {
@@ -28,13 +29,20 @@ model Profile {
   bio       String?
   avatar    String?
   accountId String  @unique
-  account   Account @relation(fields: accountId, references: id)
+  account   User    @relation(fields: accountId, references: id)
 
   // map to table profiles
   @@map("profiles")
 }
 
 enum Role {
+  SUPER_ADMIN
   ADMIN
   USER
+}
+
+enum UserAccountStatus {
+  ENABLED
+  DISABLED
+  UNVERIFIED
 }
